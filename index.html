@@ -98,7 +98,8 @@
                             min="1">
                     </div>
                 </div>
-                <button onclick="addPalletType()" class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors flex justify-center items-center gap-1">
+                <button onclick="addPalletType()"
+                    class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors flex justify-center items-center gap-1">
                     <span class="text-lg">+</span> 新增棧板至清單
                 </button>
             </div>
@@ -339,7 +340,7 @@
             const id = Date.now();
             palletTypes.push({ id, l, w, h, maxH });
             renderPalletList();
-            
+
             // Default visual to the last added pallet
             updatePalletVisuals(palletTypes[palletTypes.length - 1]);
         }
@@ -353,12 +354,12 @@
             const select = document.getElementById('boxTargetPallet');
             if (!select) return;
             const currentValue = select.value;
-            
+
             let optionsHtml = '<option value="">自動安排</option>';
             palletTypes.forEach((p, index) => {
                 optionsHtml += `<option value="${p.id}">棧板 #${index + 1} (${p.l}x${p.w})</option>`;
             });
-            
+
             select.innerHTML = optionsHtml;
             if (palletTypes.find(p => p.id.toString() === currentValue)) {
                 select.value = currentValue;
@@ -372,7 +373,7 @@
                 container.innerHTML = '<div class="text-xs text-gray-400 text-center italic p-2">尚未加入棧板</div>';
                 return;
             }
-            
+
             container.innerHTML = palletTypes.map((p, index) => `
                 <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-200 shadow-sm text-sm">
                     <div class="flex items-center gap-2">
@@ -637,7 +638,7 @@
             palletTypes.forEach(pType => {
                 let assignedItems = itemsToPack.filter(item => item.targetPalletId === pType.id.toString());
                 itemsToPack = itemsToPack.filter(item => item.targetPalletId !== pType.id.toString());
-                
+
                 while (assignedItems.length > 0) {
                     let result = packOnePalletInstance(assignedItems, pType);
                     if (result.packed.length === 0) {
@@ -656,19 +657,19 @@
             let palletIndex = 0;
             while (itemsToPack.length > 0) {
                 const currentPalletConfig = palletIndex < palletTypes.length ? palletTypes[palletIndex] : palletTypes[palletTypes.length - 1];
-                
+
                 let result = packOnePalletInstance(itemsToPack, currentPalletConfig);
-                
+
                 if (result.packed.length === 0) {
                     globalFailedItems.push(...result.remaining);
                     break;
                 }
-                
+
                 allPalletsData.push({
                     config: currentPalletConfig,
-                    boxes: currentPalletPacked
+                    boxes: result.packed
                 });
-                itemsToPack = nextBatchItems; // Continue with remaining items for next pallet
+                itemsToPack = result.remaining; // Continue with remaining items for next pallet
                 palletIndex++;
             }
 
@@ -774,7 +775,7 @@
         }
 
         init3D();
-        
+
         // Add default pallet to avoid empty state issues at start
         document.getElementById('palletL').value = 120;
         document.getElementById('palletW').value = 100;
