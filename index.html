@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 最佳化棧板堆疊計算器 / 3D Optimized Pallet Packing Calculator (Multi-Pallet Version)</title>
+    <title data-i18n="appTitle">3D 最佳化棧板堆疊計算器 (多棧板版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -52,49 +52,64 @@
 
 <body>
 
+    <!-- Language Selector -->
+    <div class="fixed top-4 right-4 z-50 bg-white/95 backdrop-blur px-3 py-2 rounded-lg shadow-md border border-gray-100 flex items-center gap-2 transition-transform hover:scale-105"
+        id="langSelectorContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+        </svg>
+        <select id="langSelect" onchange="setLanguage(this.value)"
+            class="bg-transparent border-none outline-none text-sm font-medium text-gray-700 cursor-pointer">
+            <option value="zh">繁體中文</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+
     <!-- Control Panel -->
     <div class="fixed top-0 left-0 h-full w-80 glass-panel z-10 flex flex-col transition-transform duration-300 transform translate-x-0"
         id="sidebar">
         <div class="p-5 border-b border-gray-200 bg-gray-50">
-            <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2" data-i18n="titleMain">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
-                棧板堆疊計算器 / Pallet Packing Calculator
+                棧板堆疊計算器
             </h1>
-            <p class="text-xs text-gray-500 mt-1">輸入尺寸以計算最佳堆疊方案 / Enter dimensions to calculate optimal packing</p>
+            <p class="text-xs text-gray-500 mt-1" data-i18n="titleSub">輸入尺寸以計算最佳堆疊方案</p>
         </div>
 
         <div class="flex-1 overflow-y-auto p-5 space-y-6">
 
             <!-- Pallet Settings -->
             <div class="space-y-3">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">1. 棧板設定 / Pallet
-                    Settings (cm)</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1"
+                    data-i18n="sectionPallet">1. 棧板設定 (cm)</h2>
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-xs text-gray-500 mb-1">長度 / Length (L)</label>
+                        <label class="block text-xs text-gray-500 mb-1" data-i18n="labelLength">長度 (L)</label>
                         <input type="number" id="palletL" value="120"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500 mb-1">寬度 / Width (W)</label>
+                        <label class="block text-xs text-gray-500 mb-1" data-i18n="labelWidth">寬度 (W)</label>
                         <input type="number" id="palletW" value="100"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500 mb-1">高度 / Height (H)</label>
+                        <label class="block text-xs text-gray-500 mb-1" data-i18n="labelHeight">高度 (H)</label>
                         <input type="number" id="palletH" value="15"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
                     </div>
                     <div class="col-span-3">
-                        <label class="block text-xs text-gray-500 mb-1">含棧板最大高度限制 / Max Total Height (incl.
-                            pallet)</label>
+                        <label class="block text-xs text-gray-500 mb-1" data-i18n="labelMaxHeight">含棧板最大高度限制
+                            (總高)</label>
                         <input type="number" id="maxH" value="200"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
@@ -102,75 +117,75 @@
                 </div>
                 <button onclick="addPalletType()"
                     class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors flex justify-center items-center gap-1">
-                    <span class="text-lg">+</span> 新增棧板至清單 / Add Pallet to List
+                    <span class="text-lg">+</span> <span data-i18n="btnAddPallet">新增棧板至清單</span>
                 </button>
             </div>
 
             <!-- Pallet List -->
             <div class="space-y-2">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">可用棧板清單 /
-                    Available Pallets</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1"
+                    data-i18n="listPalletTitle">可用棧板清單</h2>
                 <div id="palletListContainer" class="space-y-2 min-h-[50px]">
-                    <div class="text-xs text-gray-400 text-center italic p-2">尚未加入棧板 / No pallets added yet</div>
+                    <div class="text-xs text-gray-400 text-center italic p-2" data-i18n="noPallets">尚未加入棧板</div>
                 </div>
             </div>
 
             <!-- Box Settings -->
             <div class="space-y-3">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">2. 新增箱子 / Add Box
-                    (cm)</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1"
+                    data-i18n="sectionBox">2. 新增箱子 (cm)</h2>
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-xs text-gray-500">長 / L</label>
+                        <label class="block text-xs text-gray-500" data-i18n="labelL">長</label>
                         <input type="number" id="boxL" value="40" class="w-full p-1 border rounded text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500">寬 / W</label>
+                        <label class="block text-xs text-gray-500" data-i18n="labelW">寬</label>
                         <input type="number" id="boxW" value="30" class="w-full p-1 border rounded text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500">高 / H</label>
+                        <label class="block text-xs text-gray-500" data-i18n="labelH">高</label>
                         <input type="number" id="boxH" value="25" class="w-full p-1 border rounded text-sm">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 items-center">
                     <div>
-                        <label class="block text-xs text-gray-500">數量 / Qty</label>
+                        <label class="block text-xs text-gray-500" data-i18n="labelQty">數量</label>
                         <input type="number" id="boxQty" value="25" class="w-full p-1 border rounded text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500">顏色 / Color</label>
+                        <label class="block text-xs text-gray-500" data-i18n="labelColor">顏色</label>
                         <input type="color" id="boxColor" value="#3B82F6"
                             class="w-full h-8 p-0 border rounded cursor-pointer">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1">指定棧板 / Target Pallet (可選/Optional)</label>
+                    <label class="block text-xs text-gray-500 mb-1" data-i18n="labelTargetPallet">指定棧板 (可選)</label>
                     <select id="boxTargetPallet" class="w-full p-1 border rounded text-sm text-gray-700 bg-white">
-                        <option value="">自動安排 / Auto Arrange</option>
+                        <option value="" data-i18n="autoArrange">自動安排</option>
                     </select>
                 </div>
                 <!-- New Option: This side up -->
                 <div class="flex items-center gap-2 py-1">
                     <input type="checkbox" id="boxOnlyUp"
                         class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 border-gray-300">
-                    <label for="boxOnlyUp" class="text-sm text-gray-700">限制此面朝上 / This side up <span
-                            class="text-xs text-gray-400">(不可倒放/側放 / No rotate)</span></label>
+                    <label for="boxOnlyUp" class="text-sm text-gray-700"><span data-i18n="labelThisSideUp">限制此面朝上</span>
+                        <span class="text-xs text-gray-400" data-i18n="labelNoRotate">(不可倒放/側放)</span></label>
                 </div>
 
                 <button onclick="addBoxType()"
                     class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors flex justify-center items-center gap-1">
-                    <span class="text-lg">+</span> 新增至清單 / Add to List
+                    <span class="text-lg">+</span> <span data-i18n="btnAddBox">新增至清單</span>
                 </button>
             </div>
 
             <!-- Box List -->
             <div class="space-y-2">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">待裝箱清單 / Boxes to
-                    Pack</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1"
+                    data-i18n="listBoxTitle">待裝箱清單</h2>
                 <div id="boxListContainer" class="space-y-2 min-h-[100px]">
                     <!-- Dynamic Items -->
-                    <div class="text-xs text-gray-400 text-center italic p-2">尚未加入箱子 / No boxes added yet</div>
+                    <div class="text-xs text-gray-400 text-center italic p-2" data-i18n="noBoxes">尚未加入箱子</div>
                 </div>
             </div>
 
@@ -187,11 +202,12 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                開始多棧板計算 / Start Calculation
+                <span data-i18n="btnStartCalc">開始多棧板計算</span>
             </button>
             <button onclick="resetScene()"
-                class="w-full py-2 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium">
-                重置場景 / Reset Scene
+                class="w-full py-2 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium"
+                data-i18n="btnReset">
+                重置場景
             </button>
         </div>
     </div>
@@ -205,13 +221,13 @@
 
     <!-- Results & Navigation Overlay -->
     <div id="resultsOverlay"
-        class="fixed top-4 right-4 bg-white/95 backdrop-blur p-4 rounded-lg shadow-lg z-10 hidden w-64 border border-gray-100">
+        class="fixed top-16 right-4 bg-white/95 backdrop-blur p-4 rounded-lg shadow-lg z-10 hidden w-64 border border-gray-100">
         <div class="mb-4 border-b pb-2">
-            <h3 class="font-bold text-gray-800 text-lg">計算結果 / Results</h3>
-            <div class="text-xs text-gray-500 mt-1">需總棧板數 / Total Pallets: <span id="totalPalletsCount"
-                    class="text-blue-600 font-bold text-base">0</span></div>
-            <div class="text-xs text-gray-500">未成功裝載 / Failed to Pack: <span id="globalFailedCount"
-                    class="text-red-500 font-bold">0</span> (尺寸過大 / Too large)</div>
+            <h3 class="font-bold text-gray-800 text-lg" data-i18n="resultsTitle">計算結果</h3>
+            <div class="text-xs text-gray-500 mt-1"><span data-i18n="totalPallets">需總棧板數:</span> <span
+                    id="totalPalletsCount" class="text-blue-600 font-bold text-base">0</span></div>
+            <div class="text-xs text-gray-500"><span data-i18n="failedToPack">未成功裝載:</span> <span id="globalFailedCount"
+                    class="text-red-500 font-bold">0</span> <span data-i18n="tooLarge">(尺寸過大)</span></div>
         </div>
 
         <!-- Pallet Navigation -->
@@ -224,8 +240,9 @@
                 </svg>
             </button>
             <div class="text-center">
-                <div class="text-xs text-gray-400 uppercase font-bold">目前檢視 / Current View</div>
-                <div class="font-bold text-blue-700">棧板 / Pallet <span id="currentPalletNum">1</span></div>
+                <div class="text-xs text-gray-400 uppercase font-bold" data-i18n="currentView">目前檢視</div>
+                <div class="font-bold text-blue-700"><span data-i18n="palletNumPrefix">棧板</span> <span
+                        id="currentPalletNum">1</span></div>
             </div>
             <button onclick="switchPallet(1)" id="nextPalletBtn"
                 class="p-1 rounded hover:bg-gray-200 text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed">
@@ -238,12 +255,12 @@
 
         <!-- Current Pallet Stats -->
         <div class="text-sm space-y-1">
-            <div class="font-semibold text-gray-700 border-b pb-1 mb-1">本棧板詳情 / Pallet Details</div>
-            <div class="flex justify-between"><span>箱數 / Boxes:</span> <span id="resPacked"
+            <div class="font-semibold text-gray-700 border-b pb-1 mb-1" data-i18n="palletDetails">本棧板詳情</div>
+            <div class="flex justify-between"><span data-i18n="boxesPacked">箱數:</span> <span id="resPacked"
                     class="font-mono text-green-600 font-bold">0</span></div>
-            <div class="flex justify-between"><span>堆疊高度 / Stack Height:</span> <span id="resHeight"
-                    class="font-mono font-bold">0</span> cm</div>
-            <div class="flex justify-between"><span>空間利用率 / Volume Util:</span> <span id="resVol"
+            <div class="flex justify-between"><span data-i18n="stackHeight">堆疊高度:</span> <span><span id="resHeight"
+                        class="font-mono font-bold">0</span> cm</span></div>
+            <div class="flex justify-between"><span data-i18n="volumeUtil">空間利用率:</span> <span id="resVol"
                     class="font-mono text-blue-600 font-bold">0%</span></div>
         </div>
     </div>
@@ -252,6 +269,142 @@
     <div id="canvas-container"></div>
 
     <script>
+        // --- i18n Dictionary ---
+        const translations = {
+            zh: {
+                appTitle: "3D 最佳化棧板堆疊計算器 (多棧板版)",
+                titleMain: `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                棧板堆疊計算器`,
+                titleSub: "輸入尺寸以計算最佳堆疊方案",
+                sectionPallet: "1. 棧板設定 (cm)",
+                labelLength: "長度 (L)",
+                labelWidth: "寬度 (W)",
+                labelHeight: "高度 (H)",
+                labelMaxHeight: "含棧板最大高度限制 (總高)",
+                btnAddPallet: "新增棧板至清單",
+                listPalletTitle: "可用棧板清單",
+                noPallets: "尚未加入棧板",
+                sectionBox: "2. 新增箱子 (cm)",
+                labelL: "長",
+                labelW: "寬",
+                labelH: "高",
+                labelQty: "數量",
+                labelColor: "顏色",
+                labelTargetPallet: "指定棧板 (可選)",
+                autoArrange: "自動安排",
+                labelThisSideUp: "限制此面朝上",
+                labelNoRotate: "(不可倒放/側放)",
+                btnAddBox: "新增至清單",
+                listBoxTitle: "待裝箱清單",
+                noBoxes: "尚未加入箱子",
+                btnStartCalc: "開始多棧板計算",
+                btnReset: "重置場景",
+                resultsTitle: "計算結果",
+                totalPallets: "需總棧板數:",
+                failedToPack: "未成功裝載:",
+                tooLarge: "(尺寸過大)",
+                currentView: "目前檢視",
+                palletNumPrefix: "棧板",
+                palletDetails: "本棧板詳情",
+                boxesPacked: "箱數:",
+                stackHeight: "堆疊高度:",
+                volumeUtil: "空間利用率:",
+                errValidDim: "請輸入有效的正整數尺寸",
+                errValidDimQty: "請輸入有效的正整數尺寸和數量",
+                errAddPalletFirst: "請先至少新增一種棧板尺寸至清單",
+                errAddBoxFirst: "請先至少新增一種箱子至清單",
+                errFailedPack: "無法裝載任何箱子 (可能是箱子比棧板大)",
+                palletStr: "棧板",
+                maxTotalHeight: "最大總高:",
+                heightStr: "高:",
+                thisSideUpHover: "此面朝上",
+                qtyStr: "數量:",
+                targetPalletStr: "指定棧板:"
+            },
+            en: {
+                appTitle: "3D Optimized Pallet Packing Calculator",
+                titleMain: `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                Pallet Packing Calculator`,
+                titleSub: "Enter dimensions to calculate optimal packing",
+                sectionPallet: "1. Pallet Settings (cm)",
+                labelLength: "Length (L)",
+                labelWidth: "Width (W)",
+                labelHeight: "Height (H)",
+                labelMaxHeight: "Max Total Height (incl. pallet)",
+                btnAddPallet: "Add Pallet to List",
+                listPalletTitle: "Available Pallets",
+                noPallets: "No pallets added yet",
+                sectionBox: "2. Add Box (cm)",
+                labelL: "Length",
+                labelW: "Width",
+                labelH: "Height",
+                labelQty: "Qty",
+                labelColor: "Color",
+                labelTargetPallet: "Target Pallet (Optional)",
+                autoArrange: "Auto Arrange",
+                labelThisSideUp: "This side up",
+                labelNoRotate: "(No rotate/tilt)",
+                btnAddBox: "Add to List",
+                listBoxTitle: "Boxes to Pack",
+                noBoxes: "No boxes added yet",
+                btnStartCalc: "Start Calculation",
+                btnReset: "Reset Scene",
+                resultsTitle: "Results",
+                totalPallets: "Total Pallets:",
+                failedToPack: "Failed to Pack:",
+                tooLarge: "(Too large)",
+                currentView: "Current View",
+                palletNumPrefix: "Pallet",
+                palletDetails: "Pallet Details",
+                boxesPacked: "Boxes:",
+                stackHeight: "Stack Height:",
+                volumeUtil: "Volume Util:",
+                errValidDim: "Please enter valid positive dimensions",
+                errValidDimQty: "Please enter valid positive dimensions and quantity",
+                errAddPalletFirst: "Please add at least one pallet type first",
+                errAddBoxFirst: "Please add at least one box type first",
+                errFailedPack: "Failed to pack any box (possibly box is larger than pallet)",
+                palletStr: "Pallet",
+                maxTotalHeight: "Max Height:",
+                heightStr: "H:",
+                thisSideUpHover: "This side up",
+                qtyStr: "Qty:",
+                targetPalletStr: "Target Pallet:"
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function t(key) {
+            return translations[currentLang][key] || key;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    if (key === 'titleMain') {
+                        el.innerHTML = translations[lang][key];
+                    } else {
+                        el.textContent = translations[lang][key];
+                    }
+                }
+            });
+
+            // Re-render dynamic lists to apply new language
+            renderPalletList();
+            renderBoxList();
+        }
+
         // --- State Management ---
         let palletTypes = [];
         let boxTypes = [];
@@ -338,7 +491,7 @@
             const maxH = parseFloat(document.getElementById('maxH').value);
 
             if (l <= 0 || w <= 0 || h <= 0 || maxH <= 0) {
-                alert("請輸入有效的正整數尺寸 / Please enter valid positive dimensions");
+                alert(t('errValidDim'));
                 return;
             }
 
@@ -360,9 +513,9 @@
             if (!select) return;
             const currentValue = select.value;
 
-            let optionsHtml = '<option value="">自動安排 / Auto Arrange</option>';
+            let optionsHtml = `<option value="">${t('autoArrange')}</option>`;
             palletTypes.forEach((p, index) => {
-                optionsHtml += `<option value="${p.id}">棧板 / Pallet #${index + 1} (${p.l}x${p.w})</option>`;
+                optionsHtml += `<option value="${p.id}">${t('palletStr')} #${index + 1} (${p.l}x${p.w})</option>`;
             });
 
             select.innerHTML = optionsHtml;
@@ -375,7 +528,7 @@
             updatePalletSelectOptions();
             const container = document.getElementById('palletListContainer');
             if (palletTypes.length === 0) {
-                container.innerHTML = '<div class="text-xs text-gray-400 text-center italic p-2">尚未加入棧板 / No pallets added yet</div>';
+                container.innerHTML = `<div class="text-xs text-gray-400 text-center italic p-2">${t('noPallets')}</div>`;
                 return;
             }
 
@@ -384,19 +537,92 @@
                     <div class="flex items-center gap-2">
                         <div class="font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded">#${index + 1}</div>
                         <div>
+                            ${p.isEditing ? `
                             <div class="font-bold text-gray-700 flex items-center gap-1">
-                                ${p.l} x ${p.w} <span class="text-xs font-normal text-gray-500">(高: ${p.h})</span>
+                                <input type="number" value="${p.l}" onchange="updatePallet(${p.id}, 'l', this.value)" class="w-14 p-1 border rounded text-xs font-normal"> x 
+                                <input type="number" value="${p.w}" onchange="updatePallet(${p.id}, 'w', this.value)" class="w-14 p-1 border rounded text-xs font-normal"> x 
+                                <input type="number" value="${p.h}" onchange="updatePallet(${p.id}, 'h', this.value)" class="w-14 p-1 border rounded text-xs font-normal">
                             </div>
-                            <div class="text-xs text-gray-500">最大總高 / Max Height: ${p.maxH}</div>
+                            <div class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                ${t('maxTotalHeight')} 
+                                <input type="number" value="${p.maxH}" onchange="updatePallet(${p.id}, 'maxH', this.value)" class="w-14 p-1 border rounded text-xs">
+                            </div>
+                            ` : `
+                            <div class="font-bold text-gray-700 flex items-center gap-1">
+                                ${p.l} x ${p.w} x ${p.h}
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                ${t('maxTotalHeight')} ${p.maxH}
+                            </div>
+                            `}
                         </div>
                     </div>
-                    <button onclick="removePalletType(${p.id})" class="text-red-400 hover:text-red-600 p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                    </button>
+                    <div class="flex items-center gap-1">
+                        <button onclick="toggleEditPallet(${p.id})" class="text-blue-400 hover:text-blue-600 p-1">
+                            ${p.isEditing ? `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            ` : `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                            `}
+                        </button>
+                        <button onclick="removePalletType(${p.id})" class="text-red-400 hover:text-red-600 p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             `).join('');
+        }
+
+        function toggleEditPallet(id) {
+            const pallet = palletTypes.find(p => p.id === id);
+            if (pallet) {
+                pallet.isEditing = !pallet.isEditing;
+                renderPalletList();
+            }
+        }
+
+        function updatePallet(id, field, value) {
+            const val = parseFloat(value);
+            if (isNaN(val) || val <= 0) {
+                alert(t('errValidDim'));
+                renderPalletList();
+                return;
+            }
+            const pallet = palletTypes.find(p => p.id === id);
+            if (pallet) {
+                pallet[field] = val;
+                if (palletTypes.indexOf(pallet) === palletTypes.length - 1) {
+                    updatePalletVisuals(pallet);
+                }
+                updatePalletSelectOptions();
+            }
+        }
+
+        function updateBox(id, field, value) {
+            const val = parseFloat(value);
+            if (isNaN(val) || val <= 0) {
+                alert(t('errValidDimQty'));
+                renderBoxList();
+                return;
+            }
+            const box = boxTypes.find(b => b.id === id);
+            if (box) {
+                box[field] = val;
+                if (field === 'l' || field === 'w') {
+                    if (box.l < box.w) {
+                        let temp = box.l;
+                        box.l = box.w;
+                        box.w = temp;
+                        renderBoxList();
+                    }
+                }
+            }
         }
 
         function addBoxType() {
@@ -409,7 +635,7 @@
             const targetPalletId = document.getElementById('boxTargetPallet').value;
 
             if (l <= 0 || w <= 0 || h <= 0 || qty <= 0) {
-                alert("請輸入有效的正整數尺寸和數量 / Please enter valid positive dimensions and quantity");
+                alert(t('errValidDimQty'));
                 return;
             }
 
@@ -438,34 +664,71 @@
         function renderBoxList() {
             const container = document.getElementById('boxListContainer');
             if (boxTypes.length === 0) {
-                container.innerHTML = '<div class="text-xs text-gray-400 text-center italic p-2">尚未加入箱子 / No boxes added yet</div>';
+                container.innerHTML = `<div class="text-xs text-gray-400 text-center italic p-2">${t('noBoxes')}</div>`;
                 return;
             }
 
             container.innerHTML = boxTypes.map(b => `
                 <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-200 shadow-sm text-sm">
                     <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full border border-gray-300" style="background-color: ${b.color}"></div>
+                        <div class="w-4 h-4 rounded-full border border-gray-300 flex-shrink-0" style="background-color: ${b.color}"></div>
                         <div>
-                            <div class="font-bold text-gray-700 flex items-center gap-1">
-                                ${b.l} x ${b.w} x ${b.h}
-                                ${b.onlyUp ? '<span title="此面朝上 / This side up" class="bg-blue-100 text-blue-600 text-[10px] px-1 rounded border border-blue-200 cursor-help">⬆ 此面朝上 / This side up</span>' : ''}
+                            ${b.isEditing ? `
+                            <div class="font-bold text-gray-700 flex items-center gap-1 flex-wrap">
+                                <input type="number" value="${b.l}" onchange="updateBox(${b.id}, 'l', this.value)" class="w-12 p-1 border rounded text-xs font-normal"> x 
+                                <input type="number" value="${b.w}" onchange="updateBox(${b.id}, 'w', this.value)" class="w-12 p-1 border rounded text-xs font-normal"> x 
+                                <input type="number" value="${b.h}" onchange="updateBox(${b.id}, 'h', this.value)" class="w-12 p-1 border rounded text-xs font-normal">
+                                ${b.onlyUp ? `<span title="${t('thisSideUpHover')}" class="bg-blue-100 text-blue-600 text-[10px] px-1 rounded border border-blue-200 cursor-help ml-1">⬆ ${t('thisSideUpHover')}</span>` : ''}
                             </div>
-                            <div class="text-xs text-gray-500 mt-1">
-                                數量 / Qty: ${b.qty} 
-                                <span class="ml-2 px-1 rounded bg-gray-100 border border-gray-200">
-                                    ${b.targetPalletId ? `指定棧板 / Target Pallet: #${palletTypes.findIndex(p => p.id.toString() === b.targetPalletId) + 1}` : '自動安排 / Auto Arrange'}
+                            <div class="text-xs text-gray-500 mt-1 flex items-center gap-1 flex-wrap">
+                                ${t('qtyStr')} 
+                                <input type="number" value="${b.qty}" onchange="updateBox(${b.id}, 'qty', this.value)" class="w-14 p-1 border rounded text-xs"> 
+                                <span class="ml-1 px-1 rounded bg-gray-100 border border-gray-200">
+                                    ${b.targetPalletId ? `${t('targetPalletStr')} #${palletTypes.findIndex(p => p.id.toString() === b.targetPalletId) + 1}` : t('autoArrange')}
                                 </span>
                             </div>
+                            ` : `
+                            <div class="font-bold text-gray-700 flex items-center gap-1 flex-wrap">
+                                ${b.l} x ${b.w} x ${b.h}
+                                ${b.onlyUp ? `<span title="${t('thisSideUpHover')}" class="bg-blue-100 text-blue-600 text-[10px] px-1 rounded border border-blue-200 cursor-help ml-1">⬆ ${t('thisSideUpHover')}</span>` : ''}
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1 flex items-center gap-1 flex-wrap">
+                                ${t('qtyStr')} ${b.qty} 
+                                <span class="ml-1 px-1 rounded bg-gray-100 border border-gray-200">
+                                    ${b.targetPalletId ? `${t('targetPalletStr')} #${palletTypes.findIndex(p => p.id.toString() === b.targetPalletId) + 1}` : t('autoArrange')}
+                                </span>
+                            </div>
+                            `}
                         </div>
                     </div>
-                    <button onclick="removeBoxType(${b.id})" class="text-red-400 hover:text-red-600 p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                    </button>
+                    <div class="flex items-center gap-1 flex-shrink-0">
+                        <button onclick="toggleEditBox(${b.id})" class="text-blue-400 hover:text-blue-600 p-1">
+                            ${b.isEditing ? `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            ` : `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                            `}
+                        </button>
+                        <button onclick="removeBoxType(${b.id})" class="text-red-400 hover:text-red-600 p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             `).join('');
+        }
+
+        function toggleEditBox(id) {
+            const box = boxTypes.find(b => b.id === id);
+            if (box) {
+                box.isEditing = !box.isEditing;
+                renderBoxList();
+            }
         }
 
         function updatePalletVisuals(palletConfig) {
@@ -509,11 +772,11 @@
         // --- Multi-Pallet Logic ---
         function calculatePacking() {
             if (palletTypes.length === 0) {
-                alert("請先至少新增一種棧板尺寸至清單 / Please add at least one pallet type first");
+                alert(t('errAddPalletFirst'));
                 return;
             }
             if (boxTypes.length === 0) {
-                alert("請先至少新增一種箱子至清單 / Please add at least one box type first");
+                alert(t('errAddBoxFirst'));
                 return;
             }
 
@@ -684,7 +947,7 @@
             if (allPalletsData.length > 0) {
                 renderPallet(0);
             } else {
-                alert("無法裝載任何箱子 (可能是箱子比棧板大) / Failed to pack any box (possibly box is larger than pallet)");
+                alert(t('errFailedPack'));
             }
         }
 
@@ -778,6 +1041,9 @@
                 el.classList.add('-translate-x-full');
             }
         }
+
+        // Set initial language texts immediately before 3D init
+        setLanguage('zh');
 
         init3D();
 
