@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 最佳化棧板堆疊計算器 (多棧板版)</title>
+    <title>3D 最佳化棧板堆疊計算器 / 3D Optimized Pallet Packing Calculator (Multi-Pallet Version)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -62,37 +62,39 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
-                棧板堆疊計算器
+                棧板堆疊計算器 / Pallet Packing Calculator
             </h1>
-            <p class="text-xs text-gray-500 mt-1">輸入尺寸以計算最佳堆疊方案</p>
+            <p class="text-xs text-gray-500 mt-1">輸入尺寸以計算最佳堆疊方案 / Enter dimensions to calculate optimal packing</p>
         </div>
 
         <div class="flex-1 overflow-y-auto p-5 space-y-6">
 
             <!-- Pallet Settings -->
             <div class="space-y-3">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">1. 棧板設定 (cm)</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">1. 棧板設定 / Pallet
+                    Settings (cm)</h2>
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-xs text-gray-500 mb-1">長度 (L)</label>
+                        <label class="block text-xs text-gray-500 mb-1">長度 / Length (L)</label>
                         <input type="number" id="palletL" value="120"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500 mb-1">寬度 (W)</label>
+                        <label class="block text-xs text-gray-500 mb-1">寬度 / Width (W)</label>
                         <input type="number" id="palletW" value="100"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500 mb-1">高度 (H)</label>
+                        <label class="block text-xs text-gray-500 mb-1">高度 / Height (H)</label>
                         <input type="number" id="palletH" value="15"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
                     </div>
                     <div class="col-span-3">
-                        <label class="block text-xs text-gray-500 mb-1">含棧板最大高度限制 (總高)</label>
+                        <label class="block text-xs text-gray-500 mb-1">含棧板最大高度限制 / Max Total Height (incl.
+                            pallet)</label>
                         <input type="number" id="maxH" value="200"
                             class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                             min="1">
@@ -100,72 +102,75 @@
                 </div>
                 <button onclick="addPalletType()"
                     class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors flex justify-center items-center gap-1">
-                    <span class="text-lg">+</span> 新增棧板至清單
+                    <span class="text-lg">+</span> 新增棧板至清單 / Add Pallet to List
                 </button>
             </div>
 
             <!-- Pallet List -->
             <div class="space-y-2">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">可用棧板清單</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">可用棧板清單 /
+                    Available Pallets</h2>
                 <div id="palletListContainer" class="space-y-2 min-h-[50px]">
-                    <div class="text-xs text-gray-400 text-center italic p-2">尚未加入棧板</div>
+                    <div class="text-xs text-gray-400 text-center italic p-2">尚未加入棧板 / No pallets added yet</div>
                 </div>
             </div>
 
             <!-- Box Settings -->
             <div class="space-y-3">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">2. 新增箱子 (cm)</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">2. 新增箱子 / Add Box
+                    (cm)</h2>
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-xs text-gray-500">長</label>
+                        <label class="block text-xs text-gray-500">長 / L</label>
                         <input type="number" id="boxL" value="40" class="w-full p-1 border rounded text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500">寬</label>
+                        <label class="block text-xs text-gray-500">寬 / W</label>
                         <input type="number" id="boxW" value="30" class="w-full p-1 border rounded text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500">高</label>
+                        <label class="block text-xs text-gray-500">高 / H</label>
                         <input type="number" id="boxH" value="25" class="w-full p-1 border rounded text-sm">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 items-center">
                     <div>
-                        <label class="block text-xs text-gray-500">數量</label>
+                        <label class="block text-xs text-gray-500">數量 / Qty</label>
                         <input type="number" id="boxQty" value="25" class="w-full p-1 border rounded text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-500">顏色</label>
+                        <label class="block text-xs text-gray-500">顏色 / Color</label>
                         <input type="color" id="boxColor" value="#3B82F6"
                             class="w-full h-8 p-0 border rounded cursor-pointer">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1">指定棧板 (可選)</label>
+                    <label class="block text-xs text-gray-500 mb-1">指定棧板 / Target Pallet (可選/Optional)</label>
                     <select id="boxTargetPallet" class="w-full p-1 border rounded text-sm text-gray-700 bg-white">
-                        <option value="">自動安排</option>
+                        <option value="">自動安排 / Auto Arrange</option>
                     </select>
                 </div>
                 <!-- New Option: This side up -->
                 <div class="flex items-center gap-2 py-1">
                     <input type="checkbox" id="boxOnlyUp"
                         class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 border-gray-300">
-                    <label for="boxOnlyUp" class="text-sm text-gray-700">限制此面朝上 <span
-                            class="text-xs text-gray-400">(不可倒放/側放)</span></label>
+                    <label for="boxOnlyUp" class="text-sm text-gray-700">限制此面朝上 / This side up <span
+                            class="text-xs text-gray-400">(不可倒放/側放 / No rotate)</span></label>
                 </div>
 
                 <button onclick="addBoxType()"
                     class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors flex justify-center items-center gap-1">
-                    <span class="text-lg">+</span> 新增至清單
+                    <span class="text-lg">+</span> 新增至清單 / Add to List
                 </button>
             </div>
 
             <!-- Box List -->
             <div class="space-y-2">
-                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">待裝箱清單</h2>
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wider border-b pb-1">待裝箱清單 / Boxes to
+                    Pack</h2>
                 <div id="boxListContainer" class="space-y-2 min-h-[100px]">
                     <!-- Dynamic Items -->
-                    <div class="text-xs text-gray-400 text-center italic p-2">尚未加入箱子</div>
+                    <div class="text-xs text-gray-400 text-center italic p-2">尚未加入箱子 / No boxes added yet</div>
                 </div>
             </div>
 
@@ -182,11 +187,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                開始多棧板計算
+                開始多棧板計算 / Start Calculation
             </button>
             <button onclick="resetScene()"
                 class="w-full py-2 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium">
-                重置場景
+                重置場景 / Reset Scene
             </button>
         </div>
     </div>
@@ -202,11 +207,11 @@
     <div id="resultsOverlay"
         class="fixed top-4 right-4 bg-white/95 backdrop-blur p-4 rounded-lg shadow-lg z-10 hidden w-64 border border-gray-100">
         <div class="mb-4 border-b pb-2">
-            <h3 class="font-bold text-gray-800 text-lg">計算結果</h3>
-            <div class="text-xs text-gray-500 mt-1">需總棧板數: <span id="totalPalletsCount"
-                    class="text-blue-600 font-bold text-base">0</span> 個</div>
-            <div class="text-xs text-gray-500">未成功裝載: <span id="globalFailedCount"
-                    class="text-red-500 font-bold">0</span> 個 (尺寸過大)</div>
+            <h3 class="font-bold text-gray-800 text-lg">計算結果 / Results</h3>
+            <div class="text-xs text-gray-500 mt-1">需總棧板數 / Total Pallets: <span id="totalPalletsCount"
+                    class="text-blue-600 font-bold text-base">0</span></div>
+            <div class="text-xs text-gray-500">未成功裝載 / Failed to Pack: <span id="globalFailedCount"
+                    class="text-red-500 font-bold">0</span> (尺寸過大 / Too large)</div>
         </div>
 
         <!-- Pallet Navigation -->
@@ -219,8 +224,8 @@
                 </svg>
             </button>
             <div class="text-center">
-                <div class="text-xs text-gray-400 uppercase font-bold">目前檢視</div>
-                <div class="font-bold text-blue-700">棧板 <span id="currentPalletNum">1</span></div>
+                <div class="text-xs text-gray-400 uppercase font-bold">目前檢視 / Current View</div>
+                <div class="font-bold text-blue-700">棧板 / Pallet <span id="currentPalletNum">1</span></div>
             </div>
             <button onclick="switchPallet(1)" id="nextPalletBtn"
                 class="p-1 rounded hover:bg-gray-200 text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed">
@@ -233,12 +238,12 @@
 
         <!-- Current Pallet Stats -->
         <div class="text-sm space-y-1">
-            <div class="font-semibold text-gray-700 border-b pb-1 mb-1">本棧板詳情</div>
-            <div class="flex justify-between"><span>箱數:</span> <span id="resPacked"
+            <div class="font-semibold text-gray-700 border-b pb-1 mb-1">本棧板詳情 / Pallet Details</div>
+            <div class="flex justify-between"><span>箱數 / Boxes:</span> <span id="resPacked"
                     class="font-mono text-green-600 font-bold">0</span></div>
-            <div class="flex justify-between"><span>堆疊高度:</span> <span id="resHeight"
+            <div class="flex justify-between"><span>堆疊高度 / Stack Height:</span> <span id="resHeight"
                     class="font-mono font-bold">0</span> cm</div>
-            <div class="flex justify-between"><span>空間利用率:</span> <span id="resVol"
+            <div class="flex justify-between"><span>空間利用率 / Volume Util:</span> <span id="resVol"
                     class="font-mono text-blue-600 font-bold">0%</span></div>
         </div>
     </div>
@@ -333,7 +338,7 @@
             const maxH = parseFloat(document.getElementById('maxH').value);
 
             if (l <= 0 || w <= 0 || h <= 0 || maxH <= 0) {
-                alert("請輸入有效的正整數尺寸");
+                alert("請輸入有效的正整數尺寸 / Please enter valid positive dimensions");
                 return;
             }
 
@@ -355,9 +360,9 @@
             if (!select) return;
             const currentValue = select.value;
 
-            let optionsHtml = '<option value="">自動安排</option>';
+            let optionsHtml = '<option value="">自動安排 / Auto Arrange</option>';
             palletTypes.forEach((p, index) => {
-                optionsHtml += `<option value="${p.id}">棧板 #${index + 1} (${p.l}x${p.w})</option>`;
+                optionsHtml += `<option value="${p.id}">棧板 / Pallet #${index + 1} (${p.l}x${p.w})</option>`;
             });
 
             select.innerHTML = optionsHtml;
@@ -370,7 +375,7 @@
             updatePalletSelectOptions();
             const container = document.getElementById('palletListContainer');
             if (palletTypes.length === 0) {
-                container.innerHTML = '<div class="text-xs text-gray-400 text-center italic p-2">尚未加入棧板</div>';
+                container.innerHTML = '<div class="text-xs text-gray-400 text-center italic p-2">尚未加入棧板 / No pallets added yet</div>';
                 return;
             }
 
@@ -382,7 +387,7 @@
                             <div class="font-bold text-gray-700 flex items-center gap-1">
                                 ${p.l} x ${p.w} <span class="text-xs font-normal text-gray-500">(高: ${p.h})</span>
                             </div>
-                            <div class="text-xs text-gray-500">最大總高: ${p.maxH}</div>
+                            <div class="text-xs text-gray-500">最大總高 / Max Height: ${p.maxH}</div>
                         </div>
                     </div>
                     <button onclick="removePalletType(${p.id})" class="text-red-400 hover:text-red-600 p-1">
@@ -404,7 +409,7 @@
             const targetPalletId = document.getElementById('boxTargetPallet').value;
 
             if (l <= 0 || w <= 0 || h <= 0 || qty <= 0) {
-                alert("請輸入有效的正整數尺寸和數量");
+                alert("請輸入有效的正整數尺寸和數量 / Please enter valid positive dimensions and quantity");
                 return;
             }
 
@@ -433,7 +438,7 @@
         function renderBoxList() {
             const container = document.getElementById('boxListContainer');
             if (boxTypes.length === 0) {
-                container.innerHTML = '<div class="text-xs text-gray-400 text-center italic p-2">尚未加入箱子</div>';
+                container.innerHTML = '<div class="text-xs text-gray-400 text-center italic p-2">尚未加入箱子 / No boxes added yet</div>';
                 return;
             }
 
@@ -444,12 +449,12 @@
                         <div>
                             <div class="font-bold text-gray-700 flex items-center gap-1">
                                 ${b.l} x ${b.w} x ${b.h}
-                                ${b.onlyUp ? '<span title="此面朝上" class="bg-blue-100 text-blue-600 text-[10px] px-1 rounded border border-blue-200 cursor-help">⬆ 此面朝上</span>' : ''}
+                                ${b.onlyUp ? '<span title="此面朝上 / This side up" class="bg-blue-100 text-blue-600 text-[10px] px-1 rounded border border-blue-200 cursor-help">⬆ 此面朝上 / This side up</span>' : ''}
                             </div>
                             <div class="text-xs text-gray-500 mt-1">
-                                數量: ${b.qty} 
+                                數量 / Qty: ${b.qty} 
                                 <span class="ml-2 px-1 rounded bg-gray-100 border border-gray-200">
-                                    ${b.targetPalletId ? `指定棧板: #${palletTypes.findIndex(p => p.id.toString() === b.targetPalletId) + 1}` : '自動安排'}
+                                    ${b.targetPalletId ? `指定棧板 / Target Pallet: #${palletTypes.findIndex(p => p.id.toString() === b.targetPalletId) + 1}` : '自動安排 / Auto Arrange'}
                                 </span>
                             </div>
                         </div>
@@ -504,11 +509,11 @@
         // --- Multi-Pallet Logic ---
         function calculatePacking() {
             if (palletTypes.length === 0) {
-                alert("請先至少新增一種棧板尺寸至清單");
+                alert("請先至少新增一種棧板尺寸至清單 / Please add at least one pallet type first");
                 return;
             }
             if (boxTypes.length === 0) {
-                alert("請先至少新增一種箱子至清單");
+                alert("請先至少新增一種箱子至清單 / Please add at least one box type first");
                 return;
             }
 
@@ -679,7 +684,7 @@
             if (allPalletsData.length > 0) {
                 renderPallet(0);
             } else {
-                alert("無法裝載任何箱子 (可能是箱子比棧板大)");
+                alert("無法裝載任何箱子 (可能是箱子比棧板大) / Failed to pack any box (possibly box is larger than pallet)");
             }
         }
 
